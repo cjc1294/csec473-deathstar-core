@@ -19,7 +19,7 @@
         create_home: yes
         home: /home/ozzel
         shell: /bin/bash
-        password: $6$6/Jd8Hc4UI/wZa$3xIjuDVHBRf3t7CN1QbPDqsuy2CCvCyRRRfQgp3nlmym81t72wx8HC.eSurX9fIlc.qE6siNrKLgntiaHQnoa1 #ExecutorAdmiral
+        password: $6$6/Jd8Hc4UI/wZa$3xIjuDVHBRf3t7CN1QbPDqsuy2CCvCyRRRfQgp3nlmym81t72wx8HC.eSurX9fIlc.qE6siNrKLgntiaHQnoa1 #executor-admiral
         state: present
 
     - name: Create vader user
@@ -41,18 +41,18 @@
         name: python3-pip
         state: present
 
-    # - name: Set sudoers file permissions
-    #   file:
-    #     path: /etc/sudoers
-    #     mode: 0640
+    - name: Set sudoers file permissions
+      file:
+        path: /etc/sudoers
+        mode: 0640
 
-    # - name: Copy sudoers file
-    #   copy:
-    #     src: sudoers
-    #     dest: /etc/sudoers
-    #     owner: root
-    #     group: root
-    #     mode: 0640
+    - name: Copy sudoers file
+      copy:
+        src: sudoers
+        dest: /etc/sudoers
+        owner: root
+        group: root
+        mode: 0640
 
     - name: Copy mouse-droid maintenance script
       copy:
