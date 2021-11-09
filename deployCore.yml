@@ -1,0 +1,81 @@
+- name: Deploy deathstar-core machine
+  hosts: all
+  remote_user: greyteam
+  become: yes
+
+  tasks:
+    - name: Create mouse-droid user
+      user:
+        name: mouse-droid
+        create_home: yes
+        home: /home/mouse-droid
+        shell: /bin/bash
+        password: $6$PiYDqgHT3vuqo$LBu3tHLV58hvxNEkiMAtm9oYYgsCqS5t0Xl0OBldoZVd7uxjRNoKmtEDmhhy8itnI1xx752Q9OaAHMei.jv8q1 #beepboop
+        state: present
+
+    - name: Create ozzel user
+      user:
+        name: ozzel
+        create_home: yes
+        home: /home/ozzel
+        shell: /bin/bash
+        password: $6$6/Jd8Hc4UI/wZa$3xIjuDVHBRf3t7CN1QbPDqsuy2CCvCyRRRfQgp3nlmym81t72wx8HC.eSurX9fIlc.qE6siNrKLgntiaHQnoa1 #ExecutorAdmiral
+        state: present
+
+    - name: Create vader user
+      user:
+        name: vader
+        create_home: yes
+        home: /home/vader
+        shell: /bin/bash
+        password: $6$hK3t32xo$VbAv6iSSUSzEFIw.zccJ/PVaEFkaSG4nfmViOjS/WGKngw8o4GI9wR8bHWuDVBOZxmT/Qm5nDMvp6lPtq3psp1 #PowerOfTheDarkside
+
+    - name: Change root password
+      user:
+        name: root
+        update_password: always
+        password: $6$8QMevXmzjmR/Gqdt$STjK2ZwNeWrtiiRceKI5zno4BWuy3vQ6RQ/zDsFCbKP8mDmkoDb6kq0XhmEiNmf9lTyV4J2Ki5Wg4c./vIEnf0 #AlmostFullyOperational
+
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+
+    # - name: Set sudoers file permissions
+    #   file:
+    #     path: /etc/sudoers
+    #     mode: 0640
+
+    # - name: Copy sudoers file
+    #   copy:
+    #     src: sudoers
+    #     dest: /etc/sudoers
+    #     owner: root
+    #     group: root
+    #     mode: 0640
+
+    - name: Copy mouse-droid maintenance script
+      copy:
+        src: maintenance.sh
+        dest: /home/mouse-droid/maintenance.sh
+        owner: mouse-droid
+        group: mouse-droid
+        mode: 0755
+
+    - name: Add ozzel maintenance cronjob
+      cron:
+        user: ozzel
+        minute: '*'
+        hour: '*'
+        day: '*'
+        month: '*'
+        weekday: '*'
+        job: /home/mouse-droid/maintenance.sh
+
+    - name: Copy thermal-exhaust-port.sh
+      copy:
+        src: thermal-exhaust-port.sh
+        dest: /root/thermal-exhaust-port.sh
+        owner: root
+        group: root
+        mode: 0755
